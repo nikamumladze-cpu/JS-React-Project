@@ -1,0 +1,165 @@
+import React, { createContext, useState, useContext } from "react";
+
+const translations = {
+  ka: {
+    collection: "კოლექცია",
+    navHome: "მთავარი",
+    navCart: "კალათა",
+    navLogin: "შესვლა",
+    navReg: "რეგისტრაცია",
+    searchPlaceholder: "მოძებნე...",
+    logout: "გამოსვლა",
+    backToHome: "მთავარზე",
+    catAll: "ყველა",
+    catSmartphones: "ტელეფონები",
+    catLaptops: "ლეპტოპები",
+    catTablets: "ტაბლეტები",
+    accessories: "აქსესუარები",
+    results: "შედეგი",
+    syncing: "სინქრონიზაცია",
+    noProducts: "ტექნიკა ვერ მოიძებნა",
+    searchModel: "მოძებნე მოდელი...",
+    addToCart: "კალათაში",
+    inStock: "მარაგშია",
+    outOfStock: "ამოიწურა",
+    price: "ფასი",
+    regTitle: "რეგისტრაცია",
+    authTitle: "ავტორიზაცია",
+    fullName: "სრული სახელი",
+    email: "ელ-ფოსტა",
+    phone: "ტელეფონი",
+    password: "პაროლი",
+    confirmPass: "გაიმეორეთ პაროლი",
+    agree: "ვეთანხმები წესებს და პირობებს",
+    regBtn: "რეგისტრაცია",
+    loginBtn: "შესვლა",
+    haveAccount: "უკვე გაქვს ანგარიში?",
+    noAccount: "არ გაქვს ანგარიში?",
+    errorAgreed: "გთხოვთ დაეთანხმოთ წესებს!",
+    errorMatch: "პაროლები არ ემთხვევა!",
+    regSuccess: "რეგისტრაცია წარმატებულია!",
+    loginSuccess: "მოგესალმებით!",
+    cartEmpty: "კალათა ცარიელია",
+    startShopping: "დაიწყე შოპინგი",
+    yourCart: "თქვენი კალათა",
+    freeShipping: "უფასო მიწოდება",
+    gotFreeShipping: "თქვენ მიიღეთ უფასო მიწოდება!",
+    qualifiedFreeShipping:
+      "თქვენი შეკვეთა კვალიფიცირებულია უფასო ტრანსპორტირებაზე.",
+    addMoreForFree: "დაამატეთ კიდევ {amount} უფასო მიწოდებისთვის.",
+    remove: "წაშლა",
+    orderSummary: "შეკვეთა",
+    productsPrice: "პროდუქტები:",
+    shippingPrice: "მიწოდება:",
+    free: "უფასო",
+    total: "სულ:",
+    checkout: "გაფორმება",
+    payment: "გადახდა",
+    cardHolder: "მფლობელის სახელი",
+    cardNumber: "ბარათის ნომერი",
+    expiry: "ვადა",
+    cvv: "CVV",
+    totalAmount: "საერთო ჯამი:",
+    confirmPayment: "გადახდის დადასტურება",
+    paySuccess: "გადახდა წარმატებულია!",
+    expiresLabel: "ვადა",
+    holderLabel: "მფლობელი",
+    wishlistTitle: "ფავორიტები",
+    itemsSaved: "პროდუქტი შენახულია",
+    wishlistEmpty: "სია ცარიელია",
+    backToStore: "მაღაზიაში დაბრუნება",
+  },
+  en: {
+    collection: "Collection",
+    navHome: "Home",
+    navCart: "Cart",
+    navLogin: "Login",
+    navReg: "Register",
+    searchPlaceholder: "Search...",
+    logout: "Logout",
+    backToHome: "Back to Home",
+    catAll: "All",
+    catSmartphones: "Phones",
+    catLaptops: "Laptops",
+    catTablets: "Tablets",
+    accessories: "Accessories",
+    results: "Results",
+    syncing: "Syncing",
+    noProducts: "No products found",
+    searchModel: "Search model...",
+    addToCart: "Add to Cart",
+    inStock: "In Stock",
+    outOfStock: "Out of Stock",
+    price: "Price",
+    regTitle: "Registration",
+    authTitle: "Authorization",
+    fullName: "Full Name",
+    email: "Email Address",
+    phone: "Phone Number",
+    password: "Password",
+    confirmPass: "Confirm Password",
+    agree: "I agree to terms and conditions",
+    regBtn: "Sign Up",
+    loginBtn: "Login",
+    haveAccount: "Already have an account?",
+    noAccount: "Don't have an account?",
+    errorAgreed: "Please agree to the terms!",
+    errorMatch: "Passwords do not match!",
+    regSuccess: "Registration successful!",
+    loginSuccess: "Welcome back!",
+    cartEmpty: "Your cart is empty",
+    startShopping: "Start Shopping",
+    yourCart: "Your Cart",
+    freeShipping: "Free Shipping",
+    gotFreeShipping: "You've got free shipping!",
+    qualifiedFreeShipping: "Your order is qualified for free shipping.",
+    addMoreForFree: "Add {amount} more for free shipping.",
+    remove: "Remove",
+    orderSummary: "Summary",
+    productsPrice: "Products:",
+    shippingPrice: "Shipping:",
+    free: "Free",
+    total: "Total:",
+    checkout: "Checkout",
+    payment: "Payment",
+    cardHolder: "Card Holder Name",
+    cardNumber: "Card Number",
+    expiry: "Expiry Date",
+    cvv: "CVV",
+    totalAmount: "Total Amount:",
+    confirmPayment: "Confirm Payment",
+    paySuccess: "Payment Successful!",
+    expiresLabel: "Expires",
+    holderLabel: "Card Holder",
+    wishlistTitle: "Wishlist",
+    itemsSaved: "items saved",
+    wishlistEmpty: "Wishlist is empty",
+    backToStore: "Back to store",
+  },
+};
+
+const LanguageContext = createContext();
+
+export const LanguageProvider = ({ children }) => {
+  const [lang, setLang] = useState(localStorage.getItem("lang") || "ka");
+
+  const switchLanguage = (newLang) => {
+    setLang(newLang);
+    localStorage.setItem("lang", newLang);
+  };
+
+  const t = translations[lang];
+
+  return (
+    <LanguageContext.Provider value={{ lang, switchLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
+export const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (!context)
+    throw new Error("useLanguage must be used within a LanguageProvider");
+  return context;
+};
