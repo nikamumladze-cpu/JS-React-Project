@@ -1,20 +1,5 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
-
 export default defineConfig({
+  base: process.env.VERCEL ? "/" : "/JS-React-Project/",
+
   plugins: [react(), tailwindcss()],
-  base: "/JS-React-Project/",
-  build: {
-    chunkSizeWarningLimit: 1000,
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes("node_modules")) {
-            return "vendor";
-          }
-        },
-      },
-    },
-  },
 });
