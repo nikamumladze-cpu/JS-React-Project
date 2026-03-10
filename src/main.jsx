@@ -9,7 +9,6 @@ import { HashRouter } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
 import { Analytics } from "@vercel/analytics/react";
 
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <LanguageProvider>
@@ -18,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <WishlistProvider>
             <CartProvider>
               <App />
+              <Analytics />
             </CartProvider>
           </WishlistProvider>
         </DarkModeProvider>
