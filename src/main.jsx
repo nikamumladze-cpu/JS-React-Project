@@ -7,6 +7,8 @@ import { CartProvider } from "./context/CartContext";
 import { WishlistProvider } from "./context/WishlistContext";
 import { HashRouter } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
+import { Analytics } from "@vercel/analytics/react";
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
