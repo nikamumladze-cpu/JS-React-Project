@@ -29,7 +29,11 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const userName = localStorage.getItem("username");
+
+  const rawUserName = localStorage.getItem("username");
+  const displayUserName = rawUserName?.includes("@")
+    ? rawUserName.split("@")[0]
+    : rawUserName;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -104,7 +108,7 @@ const Navbar = () => {
           <div className="flex items-center gap-3">
             <div className="hidden lg:flex items-center gap-4 bg-(--bg-input)] px-4 py-2 rounded-2xl border border-(--border-color)]">
               <button
-                data-testid="lang-switcher" 
+                data-testid="lang-switcher"
                 onClick={() => switchLanguage(lang === "ka" ? "en" : "ka")}
                 className="flex items-center gap-2 font-black text-[10px] tracking-widest cursor-pointer hover:text-indigo-500 transition-colors uppercase"
                 style={{ color: "var(--color-text-primary)" }}>
@@ -160,14 +164,14 @@ const Navbar = () => {
             )}
 
             <div className="hidden md:flex items-center gap-2 border-l border-(--border-color)] pl-4">
-              {userName ? (
+              {rawUserName ? (
                 <div className="flex items-center gap-3">
                   <div className="flex flex-col items-end">
                     <span className="text-[9px] uppercase font-black opacity-40 text-(--color-text-primary)]">
                       Account
                     </span>
                     <span className="text-xs font-bold text-(--color-text-primary)]">
-                      {userName}
+                      {displayUserName}
                     </span>
                   </div>
                   <button
@@ -203,7 +207,7 @@ const Navbar = () => {
         <BurgerMenu
           isOpen={isMenuOpen}
           onClose={() => setIsMenuOpen(false)}
-          userName={userName}
+          userName={displayUserName}
           handleLogout={handleLogout}
         />
       )}
