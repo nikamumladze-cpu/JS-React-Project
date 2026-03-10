@@ -23,6 +23,7 @@ const Login = () => {
   const [loginMethod, setLoginMethod] = useState("email");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const schema = yup.lazy(() =>
     yup.object({
@@ -55,10 +56,29 @@ const Login = () => {
 
   const handleMethodChange = (method) => {
     setLoginMethod(method);
+    setServerError("");
     reset();
   };
 
   const onSubmit = (data) => {
+    setServerError("");
+    const registeredUser = localStorage.getItem("registeredContact");
+    const registeredPass = localStorage.getItem("registeredPassword");
+
+    if (data.contact !== registeredUser) {
+      setServerError(
+        lang === "ka"
+          ? "ანგარიში არ არის რეგისტრირებული"
+          : "Account not registered",
+      );
+      return;
+    }
+
+    if (data.password !== registeredPass) {
+      setServerError(lang === "ka" ? "პაროლი არასწორია" : "Incorrect password");
+      return;
+    }
+
     localStorage.setItem("username", data.contact);
     window.location.href = "/";
   };
@@ -90,6 +110,19 @@ const Login = () => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <AnimatePresence>
+          {serverError && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-[11px] font-bold uppercase tracking-wider">
+              <AlertCircle size={16} />
+              {serverError}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <div className="input-container">
           <div className="relative">
             <div className="icon-box">
@@ -101,13 +134,18 @@ const Login = () => {
             </div>
             <input
               {...register("contact")}
-              className={`balanced-input ${errors.contact ? "input-error" : ""}`}
+              className={`balanced-input ${errors.contact || serverError ? "input-error" : ""}`}
               placeholder=" "
             />
             <label className="balanced-float">
               {loginMethod === "email" ? t.email : t.phone}
             </label>
           </div>
+          {errors.contact && (
+            <span className="text-[10px] text-red-500 mt-1 ml-1">
+              {errors.contact.message}
+            </span>
+          )}
         </div>
 
         <div className="input-container">
@@ -118,7 +156,7 @@ const Login = () => {
             <input
               type={showPassword ? "text" : "password"}
               {...register("password")}
-              className={`balanced-input ${errors.password ? "input-error" : ""}`}
+              className={`balanced-input ${errors.password || serverError ? "input-error" : ""}`}
               placeholder=" "
             />
             <label className="balanced-float">{t.password}</label>
@@ -129,6 +167,11 @@ const Login = () => {
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
+          {errors.password && (
+            <span className="text-[10px] text-red-500 mt-1 ml-1">
+              {errors.password.message}
+            </span>
+          )}
         </div>
 
         <div className="extra-options flex items-center justify-between">
@@ -160,7 +203,7 @@ const Login = () => {
           </div>
         </button>
 
-        <div className="text-center mt-10 pt-6 border-t border(--color-border-main)] opacity-80">
+        <div className="text-center mt-10 pt-6 border-t border-(--color-border-main)] opacity-80">
           <p
             className="text-[10px] font-black uppercase tracking-[0.15em]"
             style={{ color: "var(--color-text-primary)" }}>

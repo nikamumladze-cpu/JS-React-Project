@@ -30,10 +30,11 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const rawUserName = localStorage.getItem("username");
-  const displayUserName = rawUserName?.includes("@")
-    ? rawUserName.split("@")[0]
-    : rawUserName;
+  const fullName = localStorage.getItem("fullName");
+  const userName = localStorage.getItem("username");
+
+  const displayName =
+    fullName || (userName?.includes("@") ? userName.split("@")[0] : userName);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -51,6 +52,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("username");
+    localStorage.removeItem("fullName");
     window.location.reload();
   };
 
@@ -164,14 +166,14 @@ const Navbar = () => {
             )}
 
             <div className="hidden md:flex items-center gap-2 border-l border-(--border-color)] pl-4">
-              {rawUserName ? (
+              {userName ? (
                 <div className="flex items-center gap-3">
                   <div className="flex flex-col items-end">
                     <span className="text-[9px] uppercase font-black opacity-40 text-(--color-text-primary)]">
                       Account
                     </span>
                     <span className="text-xs font-bold text-(--color-text-primary)]">
-                      {displayUserName}
+                      {displayName}
                     </span>
                   </div>
                   <button
@@ -207,7 +209,7 @@ const Navbar = () => {
         <BurgerMenu
           isOpen={isMenuOpen}
           onClose={() => setIsMenuOpen(false)}
-          userName={displayUserName}
+          userName={displayName}
           handleLogout={handleLogout}
         />
       )}

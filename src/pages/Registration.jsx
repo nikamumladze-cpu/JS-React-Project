@@ -20,10 +20,8 @@ const Registration = () => {
   const { t } = useLanguage();
   const [regMethod, setRegMethod] = useState("email");
   const [agreed, setAgreed] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const [formData, setFormData] = useState({
     username: "",
     contact: "",
@@ -35,9 +33,16 @@ const Registration = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
+
     if (!agreed) return setError(t.errorAgreed);
     if (formData.password !== formData.confirmPassword)
       return setError(t.errorMatch);
+
+    localStorage.setItem("fullName", formData.username);
+    localStorage.setItem("username", formData.contact);
+    localStorage.setItem("registeredContact", formData.contact);
+    localStorage.setItem("registeredPassword", formData.password);
 
     navigate("/login");
   };
@@ -82,6 +87,7 @@ const Registration = () => {
               className="balanced-input"
               placeholder=" "
               required
+              value={formData.username}
               onChange={(e) =>
                 setFormData({ ...formData, username: e.target.value })
               }
@@ -100,6 +106,7 @@ const Registration = () => {
               className="balanced-input"
               placeholder=" "
               required
+              value={formData.contact}
               onChange={(e) =>
                 setFormData({ ...formData, contact: e.target.value })
               }
@@ -120,6 +127,7 @@ const Registration = () => {
               className="balanced-input pr-12"
               placeholder=" "
               required
+              value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
@@ -144,6 +152,7 @@ const Registration = () => {
               className="balanced-input pr-12"
               placeholder=" "
               required
+              value={formData.confirmPassword}
               onChange={(e) =>
                 setFormData({ ...formData, confirmPassword: e.target.value })
               }
@@ -202,7 +211,9 @@ const Registration = () => {
               strokeWidth={3}
               className="group-hover:rotate-12 transition-transform"
             />
-            <span className="tracking-widest">{t.regBtn}</span>
+            <span className="tracking-widest font-black uppercase text-[10px]">
+              {t.regBtn}
+            </span>
           </div>
         </button>
 
