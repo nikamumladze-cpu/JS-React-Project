@@ -9,6 +9,7 @@ const ProductDetails = lazy(() => import("./pages/ProductDetails"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Login = lazy(() => import("./pages/Login"));
 const Registration = lazy(() => import("./pages/Registration"));
+const ShippingForm = lazy(() => import("./pages/ShippingForm"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const Wishlist = lazy(() => import("./pages/Wishlist"));
 
@@ -48,6 +49,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
             <Route path="/registration" element={<Registration />} />
+            <Route path="/shipping" element={<ShippingForm />} />
             <Route path="/checkout" element={<Checkout />} />
           </Routes>
         </Suspense>
