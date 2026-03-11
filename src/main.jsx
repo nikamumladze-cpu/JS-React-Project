@@ -8,6 +8,7 @@ import { WishlistProvider } from "./context/WishlistContext";
 import { HashRouter } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -18,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <CartProvider>
               <App />
               <Analytics />
+              <SpeedInsights />
             </CartProvider>
           </WishlistProvider>
         </DarkModeProvider>
